@@ -1,0 +1,61 @@
+This file contains information on what we know about usergrid
+
+
+Runs on cassandra
+  -NoSql
+  Key Space
+    Collunm Familly (group of related collunms)
+      Collunm
+        storage unit
+    
+An Organization is base struture
+
+An Organization has : 
+	Admin(s)
+		Application(s)
+			Roles
+				What collections can be accessed and how
+			Collections: Users,Groups,Folders,Activities,Notifiers
+				Entities
+					An entity is json data
+
+
+Commands (Done through curl)
+
+  Connections(joins):
+  
+    Create:
+      POST https://api.usergrid.com/my-org/my-app/users/fred/following/users/barney
+    
+      automatically creates follower and follows
+       using any “verb”  
+
+    Remove:
+      DELETE https://api.usergrid.com/my-org/my-app/users/fred/following/barney
+
+  User Accounts
+    
+    Create:
+      curl -X POST "https://api.usergrid.com/my-org/my-app/users" -d '{"username":"john.doe","email":"john.doe@gmail.com","name":"John Doe"}'
+
+    Authenticate:
+      curl -X POST "https://api.usergrid.com/<orgName>/<appName>/token" -d '{"grant_type":"password", "username":<username>, "password":<password>}'
+
+
+
+  Querying
+    
+    Queries are always limited in scope to the current collection 
+
+    curl -X GET "https://api.usergrid.com/my-org/my-app/collection?ql=select * where propertyName contains 'string' order by name asc
+
+
+  GeoQueries
+
+    Need in item:
+      "location": {
+        "latitude": 37.779632,    
+        "longitude": -122.395131  
+      } 
+
+    curl -X GET https://api.usergrid.com/org_name/app_name/restaurants?ql=location within 16093 of 37.776753, -122.407846
