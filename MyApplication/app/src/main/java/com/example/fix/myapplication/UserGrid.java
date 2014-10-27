@@ -18,11 +18,15 @@ public class UserGrid {
     }
 
    // Account Functions:
-    public boolean login(String user,String password){
-        return true;
+    public String login(String user,String password){
+        String query = "/tokens?grant_type=password&username="+user+"&password="+password;
+        request(query,"GET");
+        return access_token;
     }
 
     public boolean logout(String user){
+        String query = "/users/"+user+"/revoketokens";
+        request(query,"PUT");
         return true;
     }
 
@@ -30,15 +34,21 @@ public class UserGrid {
         return true;
     }
 
-    public boolean chgPassword(String oldPass,String newPass){
+    public boolean chgPassword(String user,String oldPass,String newPass){
+        String query = "/users/"+user+"/password";
+        request(query, "PUT");
         return true;
+        //-d '{"newpassword":"foo9876a","oldpassword":"bar1234b"}'
     }
 
     public boolean addAccount(String username,String pass){
         return true;
     }
 
-    public boolean deleteAccount(String username,String pass){
+    public boolean deleteAccount(String username,String pass)
+    {
+        String query = "/users/"+username;
+        request(query, "DELETE");
         return true;
     }
 
